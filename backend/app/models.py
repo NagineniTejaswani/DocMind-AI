@@ -3,7 +3,6 @@ import chromadb
 from app.config import CHROMA_PATH
 
 _chroma_client = None
-_embedding_model = None
 
 def get_chroma_client():
     global _chroma_client
@@ -11,25 +10,28 @@ def get_chroma_client():
         _chroma_client = chromadb.PersistentClient(path=str(CHROMA_PATH))
     return _chroma_client
 
-
 def get_embeddings(texts: list[str]) -> list[list[float]]:
-    USE_HF_API = os.getenv("USE_HF_API", "false").lower() == "true"
+    import requests
+
+    HF_TOKEN = os.getenv("HF_TOKEN", "")
+    API_URL = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2"
     
-    if USE_HF_API:
-        from groq import Groq
-        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-        
-        embeddings = []
-        for text in texts:
-            response = client.embeddings.create(
-                model="nomic-embed-text-v1_5",
-                input=text
-            )
-            embeddings.append(response.data[0].embedding)
-        return embeddings
-    else:
-        global _embedding_model
-        if _embedding_model is None:
-            from sentence_transformers import SentenceTransformer
-            _embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
-        return _embedding_model.encode(texts).tolist()
+    headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+    
+    response = requests.post(
+        API_URL,
+        headers=headers,
+        json={"inputs": texts, "options": {"wait_for_model": True}},
+        timeout=60
+    )
+    
+    response.raise_for_status()
+    result = response.json()
+    
+    if isinstance(result, list) and len(result) > 0:
+        if isinstance(result[0], list):
+            return result
+        if isinstance(result[0], dict) and "embedding" in result[0]:
+            return [item["embedding"] for item in result]
+    
+    raise RuntimeError(f"Unexpected response from HuggingFace: {result}")
