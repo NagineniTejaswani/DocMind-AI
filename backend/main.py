@@ -15,7 +15,11 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+   allow_origins=[
+        "http://localhost:5173",        # local React dev
+        "http://localhost:3000",        # alternate local
+        "https://doc-mind-ai-omega.vercel.app",  # production Vercel URL
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
