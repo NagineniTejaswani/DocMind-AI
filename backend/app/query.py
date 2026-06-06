@@ -1,6 +1,6 @@
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from app.models import embedding_model, chroma_client
+from app.models import get_embedding_model, get_chroma_client
 from app.config import N_RESULTS
 from dotenv import load_dotenv
 from pathlib import Path
@@ -21,8 +21,8 @@ def clear_history(session_id: str):
         conversation_histories[session_id] = []
 
 def retrieve_relevant_chunks(question: str, collection_name: str, n_results: int = N_RESULTS) -> list[str]:
-    question_embedding = embedding_model.encode([question])
-    collection = chroma_client.get_collection(collection_name)
+    question_embedding = get_embedding_model().encode([question])
+    collection = get_chroma_client().get_collection(collection_name)
     results = collection.query(
         query_embeddings=question_embedding.tolist(),
         n_results=n_results

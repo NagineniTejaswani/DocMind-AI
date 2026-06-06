@@ -1,18 +1,18 @@
 import os
 import pdfplumber
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from app.models import embedding_model, chroma_client
+from app.models import get_embedding_model, get_chroma_client
 from app.config import CHUNK_SIZE, CHUNK_OVERLAP
 
 def get_or_create_collection(collection_name: str):
-    return chroma_client.get_or_create_collection(
+    return get_chroma_client().get_or_create_collection(
         name=collection_name,
         metadata={"hnsw:space": "cosine"}
     )
 
 def embed_and_store(chunks: list[str], collection_name: str):
     collection = get_or_create_collection(collection_name)
-    embeddings = embedding_model.encode(chunks)
+    embeddings = get_embedding_model().encode(chunks)
     ids = [f"chunk_{i}" for i in range(len(chunks))]
     collection.add(
         ids=ids,
@@ -59,7 +59,7 @@ def generate_collection_name(filename: str) -> str:
     return name
 
 def collection_exists(collection_name: str) -> bool:
-    existing = chroma_client.list_collections()
+    existing = get_chroma_client().list_collections()
     return collection_name in [col.name for col in existing]
 
 def delete_collection(collection_name: str):
@@ -67,7 +67,7 @@ def delete_collection(collection_name: str):
     Deletes existing collection so we can reprocess with new chunk settings
     """
     try:
-        chroma_client.delete_collection(collection_name)
+        get_chroma_client().delete_collection(collection_name)
         print(f"Deleted collection: {collection_name}")
     except Exception as e:
         print(f"Collection not found, nothing to delete: {e}")
