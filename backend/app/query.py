@@ -1,10 +1,11 @@
+import os
+import requests
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from app.models import get_embeddings, get_chroma_client
+from app.models import get_chroma_client
 from app.config import N_RESULTS
 from dotenv import load_dotenv
 from pathlib import Path
-import requests
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
