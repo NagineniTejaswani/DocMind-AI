@@ -4,6 +4,7 @@ from app.models import get_embeddings, get_chroma_client
 from app.config import N_RESULTS
 from dotenv import load_dotenv
 from pathlib import Path
+import requests
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
@@ -21,7 +22,25 @@ def clear_history(session_id: str):
         conversation_histories[session_id] = []
 
 def retrieve_relevant_chunks(question: str, collection_name: str, n_results: int = N_RESULTS) -> list[str]:
-    question_embedding = get_embeddings([question])
+    COHERE_API_KEY = os.getenv("COHERE_API_KEY", "")
+    
+    response = requests.post(
+        "https://api.cohere.ai/v1/embed",
+        headers={
+            "Authorization": f"Bearer {COHERE_API_KEY}",
+            "Content-Type": application/json"
+        },
+        json={
+            "texts": [question],
+            "model": "embed-english-v3.0",
+            "input_type": "search_query"
+        },
+        timeout=30
+    )
+    
+    response.raise_for_status()
+    question_embedding = response.json()["embeddings"]
+    
     collection = get_chroma_client().get_collection(collection_name)
     results = collection.query(
         query_embeddings=question_embedding,

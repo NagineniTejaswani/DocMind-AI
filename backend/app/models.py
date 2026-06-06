@@ -12,21 +12,21 @@ def get_chroma_client():
     return _chroma_client
 
 def get_embeddings(texts: list[str]) -> list[list[float]]:
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={GEMINI_API_KEY}"
+    COHERE_API_KEY = os.getenv("COHERE_API_KEY", "")
     
-    embeddings = []
-    for text in texts:
-        response = requests.post(
-            url,
-            json={
-                "model": "models/text-embedding-004",
-                "content": {"parts": [{"text": text}]}
-            },
-            timeout=30
-        )
-        response.raise_for_status()
-        embedding = response.json()["embedding"]["values"]
-        embeddings.append(embedding)
+    response = requests.post(
+        "https://api.cohere.ai/v1/embed",
+        headers={
+            "Authorization": f"Bearer {COHERE_API_KEY}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "texts": texts,
+            "model": "embed-english-v3.0",
+            "input_type": "search_document"
+        },
+        timeout=30
+    )
     
-    return embeddings
+    response.raise_for_status()
+    return response.json()["embeddings"]
