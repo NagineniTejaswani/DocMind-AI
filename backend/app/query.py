@@ -28,7 +28,7 @@ def retrieve_relevant_chunks(question: str, collection_name: str, n_results: int
         "https://api.cohere.ai/v1/embed",
         headers={
             "Authorization": f"Bearer {COHERE_API_KEY}",
-            "Content-Type": application/json"
+            "Content-Type": "application/json"
         },
         json={
             "texts": [question],
