@@ -1,7 +1,7 @@
 import os
 import pdfplumber
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from app.models import get_embedding_model, get_chroma_client
+from app.models import get_embeddings, get_chroma_client
 from app.config import CHUNK_SIZE, CHUNK_OVERLAP
 
 def get_or_create_collection(collection_name: str):
@@ -12,11 +12,11 @@ def get_or_create_collection(collection_name: str):
 
 def embed_and_store(chunks: list[str], collection_name: str):
     collection = get_or_create_collection(collection_name)
-    embeddings = get_embedding_model().encode(chunks)
+    embeddings = get_embeddings(chunks)
     ids = [f"chunk_{i}" for i in range(len(chunks))]
     collection.add(
         ids=ids,
-        embeddings=embeddings.tolist(),
+        embeddings=embeddings,
         documents=chunks
     )
     return collection
