@@ -13,14 +13,14 @@ def get_chroma_client():
 
 def get_embeddings(texts: list[str]) -> list[list[float]]:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent?key={GEMINI_API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={GEMINI_API_KEY}"
     
     embeddings = []
     for text in texts:
         response = requests.post(
             url,
             json={
-                "model": "models/embedding-001",
+                "model": "models/text-embedding-004",
                 "content": {"parts": [{"text": text}]}
             },
             timeout=30
