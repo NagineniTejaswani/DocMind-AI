@@ -71,24 +71,13 @@ export default function UploadZone({ onUploadSuccess, onError }) {
       }}
     >
       <div style={{ textAlign: 'center', maxWidth: '480px', width: '100%', padding: '0 24px' }}>
-        {/* <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#7c9ef8" strokeWidth="1.5" style={{ marginBottom: '16px' }}>
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-        </svg> */}
-
         <img src={document} alt="Document" style={{ marginBottom: '16px', width: '50px', height: '50px' }} />
         <h2 style={{ color: '#ffffff', fontWeight: '600', marginBottom: '8px' }}>DocMind AI</h2>
         <p style={{ color: '#555', marginBottom: '32px', fontSize: '14px' }}>
           Upload a PDF and start asking questions about it
         </p>
 
-        <div
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onClick={() => !isUploading && fileInputRef.current.click()}
+        <div onDrop={handleDrop} onDragOver={handleDragOver}  onDragLeave={handleDragLeave} onClick={() => !isUploading && fileInputRef.current.click()}
           style={{
             border: `2px dashed ${isDragging ? '#2f6feb' : '#2a2a2a'}`,
             borderRadius: '12px',

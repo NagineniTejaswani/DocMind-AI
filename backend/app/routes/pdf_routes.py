@@ -78,12 +78,20 @@ async def ask_question_endpoint(request: AskRequest):
             detail="Document not found. Please upload the PDF first."
         )
 
-    result = answer_question(
-        question=request.question,
-        collection_name=request.collection_name,
-        session_id=request.session_id
-    )
-    return {"question": result["question"], "answer": result["answer"]}
+    try:
+        result = answer_question(
+            question=request.question,
+            collection_name=request.collection_name,
+            session_id=request.session_id
+        )
+        return {"question": result["question"], "answer": result["answer"]}
+    except Exception as e:
+        error_msg = str(e)
+        print(f"Error processing question: {error_msg}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate answer: {error_msg}"
+        )
 
 @router.post("/clear-history")
 async def clear_conversation_history(request: ClearHistoryRequest):

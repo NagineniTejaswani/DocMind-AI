@@ -9,7 +9,9 @@ from pathlib import Path
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0)
+def get_llm():
+    model_name = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+    return ChatGroq(model=model_name, temperature=0)
 
 conversation_histories: dict[str, list] = {}
 
@@ -71,6 +73,7 @@ Context from document:
     messages.extend(history)
     messages.append(HumanMessage(content=question))
 
+    llm = get_llm()
     response = llm.invoke(messages)
     answer = response.content
 
