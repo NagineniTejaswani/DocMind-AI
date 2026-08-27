@@ -44,14 +44,117 @@ body {
 .message-ai {
   background-color: #1e1e1e;
   color: #e0e0e0;
-  border-radius: 18px 18px 18px 4px;
-  padding: 10px 16px;
-  max-width: 75%;
+  border-radius: 14px 14px 14px 4px;
+  padding: 12px 18px;
+  max-width: 80%;
   margin-bottom: 16px;
   width: fit-content;
-  line-height: 1.5;
-  font-size: 14px;
+  line-height: 1.6;
+  font-size: 14.5px;
   border: 1px solid #2a2a2a;
+  word-break: break-word;
+}
+
+/* Markdown typography styling */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  color: #f0f0f0;
+  margin-top: 14px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.markdown-content h1 { font-size: 18px; }
+.markdown-content h2 { font-size: 16px; }
+.markdown-content h3 {
+  font-size: 15px;
+  border-bottom: 1px solid #2e2e2e;
+  padding-bottom: 4px;
+}
+.markdown-content h4 { font-size: 14px; }
+
+.markdown-content p {
+  margin-bottom: 10px;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-left: 20px;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.markdown-content li {
+  margin-bottom: 4px;
+}
+
+.markdown-content li > p {
+  margin-bottom: 4px;
+}
+
+.markdown-content hr {
+  border: 0;
+  border-top: 1px solid #333333;
+  margin: 16px 0;
+}
+
+.markdown-content strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.markdown-content code {
+  background-color: #2b2b2b;
+  color: #9cdcfe;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.markdown-content pre {
+  background-color: #121212;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.markdown-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #2f6feb;
+  padding-left: 12px;
+  color: #a0a0a0;
+  margin: 10px 0;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid #333333;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.markdown-content th {
+  background-color: #262626;
+  color: #ffffff;
 }
 
 .session-card {
